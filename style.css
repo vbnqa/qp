@@ -1,0 +1,221 @@
+/* متغيرات الألوان والخطوط لتسهيل التعديل */
+:root {
+    --primary-color: #a00243;
+    --secondary-color: #6c757d;
+    --background-color: #f8f9fa;
+    --text-color: #343a40;
+    --font-family: "Tahoma", sans-serif;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    direction: rtl; /* إضافة اتجاه النص من اليمين إلى اليسار */
+}
+
+.navbar {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 1rem;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+/* إضافة تمرير أفقي للحاوية */
+.container {
+    max-width: 1600px;
+    margin: 2rem auto;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+h1,
+h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+p {
+    text-align: center;
+    color: #6c757d;
+    margin-bottom: 2rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+.table thead th {
+    background-color: var(--primary-color);
+    color: #fff;
+    font-weight: bold;
+    padding: 0.75rem;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.table tbody td {
+    padding: 0.75rem;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: var(--background-color);
+}
+
+.table tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #545b62;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.pagination .btn {
+    margin: 0 0.5rem;
+}
+
+.login {
+    max-width: 400px;
+    margin: 3rem auto;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.login label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.login input[type="text"],
+.login input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+}
+
+#playerDetails {
+    max-width: 800px;
+    margin: 2rem auto;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+#playerDetails h2 {
+    margin-bottom: 2rem;
+}
+
+/* تعديل تصميم الحاوية لتكون الصورة في اليمين */
+.details-container {
+    display: flex;
+    align-items: flex-start;
+    /* محاذاة العناصر إلى الأعلى */
+    justify-content: flex-end;
+    /* محاذاة العناصر إلى نهاية السطر (اليمين) */
+}
+
+/* تعديل مكان الصورة */
+#detailPhoto {
+    max-width: 150px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-right: 2rem;
+    /* إضافة هامش على اليمين */
+    margin-left: 0;
+    /* إزالة الهامش على اليسار */
+}
+
+.details-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.details-table th,
+.details-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #ddd;
+    text-align: right;
+}
+
+.details-table th {
+    width: 30%;
+    font-weight: bold;
+    background-color: #f2f2f2;
+}
+
+.details-table tr:last-child td {
+    border-bottom: none;
+}
+
+.alert {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}

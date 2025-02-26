@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم الإدارة</title>
+    <!-- إضافة Font Awesome للرموز (اختياري) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- تضمين Bootstrap (اختياري لتحسين التصميم والاستجابة) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- تضمين ملف CSS المخصص -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- الشريط العلوي (Navbar) -->
+    <nav class="navbar">
+        <a href="#">الرئيسية</a>
+        <a href="#">إدارة المستخدمين</a>
+        <a href="#">إعدادات النظام</a>
+    </nav>
+
+    <!-- نموذج تسجيل الدخول للإدارة -->
+    <div class="login" id="adminLogin">
+        <h2>تسجيل الدخول</h2>
+        <form action="#" method="POST" id="loginForm">
+            <label for="username">اسم المستخدم:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">كلمة المرور:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit" class="btn btn-primary">دخول</button>
+            <div id="loginError" class="alert alert-danger" style="display: none;"></div>
+        </form>
+    </div>
+
+    <!-- لوحة الإدارة (تُعرض بعد تسجيل الدخول) -->
+    <div class="container" id="adminPanel" style="display:none;">
+        <h1>مرحبًا بك في لوحة الإدارة!</h1>
+        <p>في هذه الصفحة يمكنك إدارة بيانات اللاعبين المسجّلين.</p>
+
+        <a href="add_player.html" class="btn btn-primary mb-3">إضافة لاعب جديد</a>
+
+        <div id="generalError" class="alert alert-danger" style="display: none;"></div>
+
+        <!-- مثال لقائمة اللاعبين في جدول -->
+        <table class="table" id="playersTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>صورة اللاعب</th>
+                    <th>اسم اللاعب (عربي)</th>
+                    <th>اسم اللاعب (إنجليزي)</th>
+                    <th>تاريخ الميلاد</th>
+                    <th>مقاس البدلة</th>
+                    <th>مقاس القميص</th>
+                    <th>مقاس الحذاء الرياضي</th>
+                    <th>مقاس حذاء البولينج</th>
+                    <th>وزن الكرة (رطل)</th>
+                    <th>خيارات</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- يتم تعبئة هذا الجدول ديناميكيًا بواسطة JavaScript -->
+            </tbody>
+        </table>
+
+        <!-- زر لطباعة جميع اللاعبين -->
+        <button onclick="printAllPlayers()" class="btn btn-secondary"><i class="fas fa-print"></i> طباعة جميع
+            اللاعبين</button>
+
+        <!-- مثال لتقسيم الصفحات (Pagination) -->
+        <div class="pagination">
+            <button onclick="prevPage()" class="btn btn-outline-primary" id="prevPageBtn" disabled>« السابق</button>
+            <button onclick="nextPage()" class="btn btn-outline-primary" id="nextPageBtn">التالي »</button>
+        </div>
+    </div>
+
+    <!-- قسم لعرض تفاصيل اللاعب في صفحة منفصلة -->
+    <div id="playerDetails" style="display: none;">
+        <h2>تفاصيل اللاعب</h2>
+
+        <div class="details-container">
+            <!-- صورة اللاعب في اليمين -->
+            <img id="detailPhoto" src="" alt="صورة اللاعب" />
+
+            <!-- جدول التفاصيل -->
+            <table class="details-table">
+                <tr>
+                    <th>اسم اللاعب (عربي)</th>
+                    <td id="detailNameAr"></td>
+                </tr>
+                <tr>
+                    <th>اسم اللاعب (إنجليزي)</th>
+                    <td id="detailNameEn"></td>
+                </tr>
+                <tr>
+                    <th>تاريخ الميلاد</th>
+                    <td id="detailBirthDate"></td>
+                </tr>
+                <tr>
+                    <th>العنوان</th>
+                    <td id="detailAddress"></td>
+                </tr>
+                <tr>
+                    <th>هاتف اللاعب</th>
+                    <td id="detailPhone"></td>
+                </tr>
+                <tr>
+                    <th>هاتف ولي الأمر</th>
+                    <td id="detailFatherPhone"></td>
+                </tr>
+                <tr>
+                    <th>البريد الإلكتروني</th>
+                    <td id="detailEmail"></td>
+                </tr>
+                <tr>
+                    <th>مقاس البدلة</th>
+                    <td id="detailSuitSize"></td>
+                </tr>
+                <tr>
+                    <th>مقاس القميص</th>
+                    <td id="detailShirtSize"></td>
+                </tr>
+                <tr>
+                    <th>مقاس الحذاء الرياضي</th>
+                    <td id="detailShoeSize"></td>
+                </tr>
+                <tr>
+                    <th>مقاس حذاء البولينج</th>
+                    <td id="detailBowlingShoeSize"></td>
+                </tr>
+                <tr>
+                    <th>وزن الكرة (رطل)</th>
+                    <td id="detailBallWeight"></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- الأزرار أسفل تفاصيل اللاعب -->
+        <button class="btn btn-secondary back-button" onclick="goBackToList()"><i class="fas fa-arrow-left"></i>
+            عودة للقائمة</button>
+        <button class="btn btn-info" onclick="printPlayerDetails()"><i class="fas fa-print"></i> طباعة بيانات
+            اللاعب</button>
+    </div>
+
+    <script>
+        // عناصر الصفحات
+        const adminLoginForm = document.getElementById("adminLogin");
+        const adminPanel = document.getElementById("adminPanel");
+        const playerDetails = document.getElementById("playerDetails");
+
+        // عناصر التفاصيل
+        const detailPhoto = document.getElementById("detailPhoto");
+        const detailNameAr = document.getElementById("detailNameAr");
+        const detailNameEn = document.getElementById("detailNameEn");
+        const detailBirthDate = document.getElementById("detailBirthDate");
+        const detailAddress = document.getElementById("detailAddress");
+        const detailPhone = document.getElementById("detailPhone");
+        const detailFatherPhone = document.getElementById("detailFatherPhone");
+        const detailEmail = document.getElementById("detailEmail");
+        const detailSuitSize = document.getElementById("detailSuitSize");
+        const detailShirtSize = document.getElementById("detailShirtSize");
+        const detailShoeSize = document.getElementById("detailShoeSize");
+        const detailBowlingShoeSize = document.getElementById("detailBowlingShoeSize");
+        const detailBallWeight = document.getElementById("detailBallWeight");
+
+        // تقسيم الصفحات (Client-side - بسيط للمثال)
+        let currentPage = 1;
+        const pageSize = 5; // عدد اللاعبين في الصفحة الواحدة
+        let allPlayers = [];  // لتخزين جميع اللاعبين بعد جلبهم
+
+        // عملية تسجيل الدخول
+        adminLoginForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const loginError = document.getElementById("loginError");
+
+            // مسح أي رسائل خطأ سابقة
+            loginError.style.display = "none";
+
+            // إضافة مؤشر تحميل (loading indicator) - بسيط
+            const loginButton = document.querySelector('#loginForm button[type="submit"]');
+            loginButton.disabled = true; // تعطيل الزر لمنع إرسال متكرر
+            loginButton.textContent = "جاري التحقق..."; // تغيير النص
+
+            fetch('login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: username, password: password })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        alert("تم تسجيل الدخول بنجاح!");
+                        adminLoginForm.style.display = "none";
+                        adminPanel.style.display = "block";
+                        loadPlayersData(); // استدعاء وظيفة لتحميل بيانات اللاعبين
+                    } else {
+                        loginError.textContent = "اسم المستخدم أو كلمة المرور غير صحيحة!";
+                        loginError.style.display = "block"; // إظهار رسالة الخطأ
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    loginError.textContent = "حدث خطأ أثناء تسجيل الدخول.";
+                    loginError.style.display = "block";
+                })
+                .finally(() => {
+                    // استعادة حالة الزر بغض النظر عن النتيجة
+                    loginButton.disabled = false;
+                    loginButton.textContent = "دخول"; // استعادة النص الأصلي
+                });
+        });
+
+        // دالة لعرض رسالة خطأ عامة
+        function displayGeneralError(message) {
+            const generalError = document.getElementById("generalError");
+            generalError.textContent = message;
+            generalError.style.display = "block";
+        }
+
+        // دالة لتحميل بيانات اللاعبين من الخادم
+        function loadPlayersData() {
+            fetch('players.php')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    allPlayers = data; // تخزين جميع اللاعبين
+                    updatePaginationButtons();
+                    displayCurrentPage();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    displayGeneralError("حدث خطأ أثناء تحميل بيانات اللاعبين.");
+                });
+        }
+
+        function displayCurrentPage() {
+            const startIndex = (currentPage - 1) * pageSize;
+            const endIndex = startIndex + pageSize;
+            const playersToShow = allPlayers.slice(startIndex, endIndex); // استخراج اللاعبين للصفحة الحالية
+            displayPlayers(playersToShow);
+        }
+
+        // دالة لعرض بيانات اللاعبين في الجدول
+        function displayPlayers(players) {
+            const playersTableBody = document.querySelector("#playersTable tbody");
+            playersTableBody.innerHTML = ""; // مسح أي محتوى سابق
+
+            players.forEach(player => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${player.id}</td>
+                    <td><img src="${player.photo}" alt="صورة اللاعب" style="max-width: 50px; max-height: 50px;"></td>
+                    <td>${player.nameAr}</td>
+                    <td>${player.nameEn}</td>
+                    <td>${player.birthDate}</td>
+                    <td>${player.suitSize}</td>
+                    <td>${player.shirtSize}</td>
+                    <td>${player.shoeSize}</td>
+                    <td>${player.bowlingShoeSize}</td>
+                    <td>${player.ballWeight}</td>
+                    <td>
+                        <button onclick="viewDetails(${player.id})" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i> عرض</button>
+                        <button onclick="deletePlayer(${player.id})" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> حذف</button>
+                    </td>
+                `;
+                playersTableBody.appendChild(row);
+            });
+        }
+
+        // عرض تفاصيل اللاعب
+        function viewDetails(playerId) {
+            fetch(`players.php?id=${playerId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Player not found');
+                    }
+                    return response.json();
+                })
+                .then(player => {
+                    detailPhoto.src = player.photo;
+                    detailNameAr.textContent = player.nameAr;
+                    detailNameEn.textContent = player.nameEn;
+                    detailBirthDate.textContent = player.birthDate;
+                    detailAddress.textContent = player.address;
+                    detailPhone.textContent = player.phone;
+                    detailFatherPhone.textContent = player.fatherPhone;
+                    detailEmail.textContent = player.email;
+                    detailSuitSize.textContent = player.suitSize;
+                    detailShirtSize.textContent = player.shirtSize;
+                    detailShoeSize.textContent = player.shoeSize;
+                    detailBowlingShoeSize.textContent = player.bowlingShoeSize;
+                    detailBallWeight.textContent = player.ballWeight;
+
+                    adminPanel.style.display = "none";
+                    playerDetails.style.display = "block";
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("لا توجد بيانات عن اللاعب رقم " + playerId);
+                });
+        }
+
+        // حذف لاعب
+        function deletePlayer(playerId) {
+            if (confirm("هل أنت متأكد أنك تريد حذف هذا اللاعب؟")) {
+                fetch(`players.php?id=${playerId}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to delete player');
+                        }
+                        alert("تم حذف اللاعب رقم " + playerId);
+                        loadPlayersData(); // تحديث الجدول بعد الحذف
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert("حدث خطأ أثناء حذف اللاعب.");
+                    });
+            }
+        }
+
+        // طباعة جميع اللاعبين
+        function printAllPlayers() {
+            window.print();
+        }
+
+        // طباعة تفاصيل اللاعب
+        function printPlayerDetails() {
+            window.print();
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                updatePaginationButtons();
+                displayCurrentPage();
+            }
+        }
+
+        function nextPage() {
+            const totalPages = Math.ceil(allPlayers.length / pageSize);
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePaginationButtons();
+                displayCurrentPage();
+            }
+        }
+
+        function updatePaginationButtons() {
+            const prevPageBtn = document.getElementById("prevPageBtn");
+            const nextPageBtn = document.getElementById("nextPageBtn");
+
+            prevPageBtn.disabled = (currentPage === 1);
+            nextPageBtn.disabled = (currentPage === Math.ceil(allPlayers.length / pageSize));
+        }
+    </script>
+
+    <!-- تضمين Bootstrap JavaScript (اختياري) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
